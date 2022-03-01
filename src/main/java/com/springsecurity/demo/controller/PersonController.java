@@ -1,10 +1,8 @@
 package com.springsecurity.demo.controller;
 
+import com.google.gson.Gson;
 import com.springsecurity.demo.model.Person;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -43,13 +41,38 @@ public class PersonController {
     }
 
     /**
+     * ROLE: admin
      * returns error page since /api/persons is need to authenticated with rol 'admin'
      * see {@link com.springsecurity.demo.config.SecurityConfiguration} line 22
      * @return
      */
     @GetMapping
     public String getAll() {
-        return PERSON_LIST.toString();
+        return new Gson().toJson(PERSON_LIST);
+    }
+
+    /**
+     * ROLE: add_role
+     * @param person
+     * @return
+     */
+    @PostMapping("/add")
+    public String  addPerson(@RequestBody Person person){
+        PERSON_LIST.add(person);
+
+        return new Gson().toJson(PERSON_LIST);
+    }
+
+    /**
+     * ROLE: update_role
+     * @param id
+     * @param person
+     * @return
+     */
+    @PutMapping("/update")
+    public String updatePerson(@PathVariable("id") Integer id, @RequestBody Person person){
+
+        return new Gson().toJson(PERSON_LIST);
     }
 
 }
